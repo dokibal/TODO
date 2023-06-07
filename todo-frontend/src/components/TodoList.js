@@ -12,11 +12,20 @@ class TodoList extends React.Component {
     }
 
     componentDidMount() {
-        TodoService.GetTodos().then(res => {
+        TodoService.getTodos().then(res => {
             this.setState({
                 todos: res.data
             });
         });
+    }
+
+    refresh = () =>{
+        TodoService.getTodos().then(res => {
+            this.setState({
+                todos: res.data
+            });
+        });
+        console.log("refresh");
     }
 
     render() {
@@ -24,10 +33,11 @@ class TodoList extends React.Component {
             <div>
                 <h2 className="text-center">TODO List</h2>
                 <div className="container-lg">
+                    <TodoCard refresh={this.refresh} key={0}/>
                     {
                         this.state.todos.map((todo) => {
                             return (
-                                <TodoCard todo={todo} key={todo.id}/>
+                                <TodoCard refresh={this.refresh} todo={todo} key={todo.id}/>
                                 )
                         })
                     }
