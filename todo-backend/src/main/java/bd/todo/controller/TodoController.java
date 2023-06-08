@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bd.todo.model.Todo;
@@ -31,6 +32,11 @@ public class TodoController {
 	@GetMapping("/todos")
 	public ResponseEntity<List<Todo>> getTodos() {
 		return ResponseEntity.ok(todoService.getTodos());
+	}
+
+	@GetMapping("/todosByStatus")
+	public ResponseEntity<List<Todo>> getTodosByStatus(@RequestParam("done") boolean done) {
+		return ResponseEntity.ok(todoService.getTodosByStatus(done));
 	}
 
 	@PostMapping("/todos")

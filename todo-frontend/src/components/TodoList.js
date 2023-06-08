@@ -1,5 +1,5 @@
 import TodoService from "../services/TodoService";
-import React, { Component } from "react"
+import React from "react"
 import TodoCard from './TodoCard.js'
 
 class TodoList extends React.Component {
@@ -7,25 +7,30 @@ class TodoList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: []
+            undoneTodos: [],
+            doneTodos: []
         };
     }
 
-    componentDidMount() {
-        TodoService.getTodos().then(res => {
+    loadTodos = () =>{
+        TodoService.getTodosByStatus(false).then(res => {
             this.setState({
-                todos: res.data
+                undoneTodos: res.data
+            });
+        });
+        TodoService.getTodosByStatus(true).then(res => {
+            this.setState({
+                doneTodos: res.data
             });
         });
     }
 
+    componentDidMount() {
+        this.loadTodos();
+    }
+
     refresh = () =>{
-        TodoService.getTodos().then(res => {
-            this.setState({
-                todos: res.data
-            });
-        });
-        console.log("refresh");
+        this.loadTodos();
     }
 
     render() {
@@ -35,7 +40,16 @@ class TodoList extends React.Component {
                 <div className="container-lg">
                     <TodoCard refresh={this.refresh} key={0}/>
                     {
-                        this.state.todos.map((todo) => {
+                        this.state.undoneTodos.map((todo) => {
+                            console.log(todo.creationDate);
+                            return (
+                                <TodoCard refresh={this.refresh} todo={todo} key={todo.id}/>
+                                )
+                        })
+                    }
+                    {
+                        this.state.doneTodos.map((todo) => {
+                            console.log(todo.creationDate);
                             return (
                                 <TodoCard refresh={this.refresh} todo={todo} key={todo.id}/>
                                 )

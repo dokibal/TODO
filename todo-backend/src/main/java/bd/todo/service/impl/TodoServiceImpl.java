@@ -1,7 +1,9 @@
 package bd.todo.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import bd.todo.exception.ResourceNotFoundException;
@@ -14,6 +16,8 @@ public class TodoServiceImpl implements TodoService {
 
 	private TodoRepository todoRepository;
 
+	private static final Sort sortByCreationDate = Sort.by(Sort.Direction.DESC, "creationDate");
+
 	public TodoServiceImpl(TodoRepository todoRepository) {
 		super();
 		this.todoRepository = todoRepository;
@@ -21,7 +25,12 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public List<Todo> getTodos() {
-		return todoRepository.findAll();
+		return todoRepository.findAll(sortByCreationDate);
+	}
+
+	@Override
+	public List<Todo> getTodosByStatus(boolean done) {
+		return todoRepository.findTodosByStatus(done);
 	}
 
 	@Override
@@ -33,6 +42,8 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public Todo addTodo(Todo todo) {
+		LocalDateTime date = LocalDateTime.now();
+		todo.setCreationDate(date);
 		return todoRepository.save(todo);
 	}
 
@@ -40,10 +51,12 @@ public class TodoServiceImpl implements TodoService {
 	public Todo updateTodo(Long id, Todo todo) {
 
 		Todo origTodo = getTodoById(id);
+
 		origTodo.setActivity(todo.getActivity());
 		origTodo.setDone(todo.isDone());
+		// We don't overwrite the creationDate
 
-		return todoRepository.save(todo);
+		return todoRepository.save(origTodo);
 	}
 
 	@Override

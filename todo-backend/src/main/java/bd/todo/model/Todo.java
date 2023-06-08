@@ -1,5 +1,8 @@
 package bd.todo.model;
 
+import java.time.LocalDateTime;
+
+import bd.todo.constants.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,8 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "todos")
+@Table(name = Constants.TODO_TABLE_NAME)
 public class Todo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -17,6 +21,8 @@ public class Todo {
 	private String activity;
 	@Column(name = "done")
 	private boolean done;
+	@Column(columnDefinition = "timestamp", name = "creation_date")
+	private LocalDateTime creationDate;
 
 	public Todo() {
 	}
@@ -49,6 +55,14 @@ public class Todo {
 
 	public void setDone(boolean done) {
 		this.done = done;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
 	}
 
 }

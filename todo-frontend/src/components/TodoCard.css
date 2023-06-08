@@ -1,8 +1,11 @@
 .card{
-  background-color: #fafafa;
+  background-color: #f5f5f5;
   color: black;
 }
 .removeIcon{
   font-size: 24px;
   cursor: pointer;
+}
+.date{
+  text-align: right;
 }

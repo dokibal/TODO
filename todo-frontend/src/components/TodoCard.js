@@ -12,8 +12,9 @@ class TodoCard extends React.Component {
                 todo: {
                     id: props.todo.id,
                     done: props.todo.done,
-                    activity: props.todo.activity,
-                }
+                    activity: props.todo.activity
+                },
+                creationDate: new Date(props.todo.creationDate).toLocaleString()
             };
         }
         else {
@@ -33,11 +34,14 @@ class TodoCard extends React.Component {
                 ...this.state.todo,
                 done: event.target.checked
             }
-        });
+        },
+        ()=>{
+            this.save()
+        }
+        );
     };
 
     editActivity = (event) => {
-        console.log(this.state.todo.id);
         this.setState({
             todo: {
                 ...this.state.todo,
@@ -46,22 +50,26 @@ class TodoCard extends React.Component {
         });
     };
 
-    save = (event) => {
+    save = () => {
+        TodoService.saveTodo(this.state.todo).then(res => {
+            if (!this.state.todo.id) {
+                //Empty the component
+                this.setState({
+                    todo: {
+                        id: 0,
+                        done: false,
+                        activity: ""
+                    },
+                    creationDate: null
+                })
+            }
+            this.props.refresh();
+        })
+    }
+
+    activityKeyPress = (event) => {
         if (event.key === 'Enter') {
-            TodoService.saveTodo(this.state.todo).then(res => {
-                if (!this.state.todo.id) {
-                    //Empty the component
-                    this.setState({
-                        todo: {
-                            id: 0,
-                            done: false,
-                            activity: ""
-                        }
-                    })
-                }
-                this.props.refresh();
-            })
-            console.log('Enter billentyű lenyomva');
+            this.save();
         }
     };
 
@@ -75,14 +83,15 @@ class TodoCard extends React.Component {
     render() {
         return (
             <div className="card mb-2 ">
-                <div className="row no-gutters">
+
+                <div className="card-body row no-gutters">
                     <div className="col-md-1 text-center my-auto">
                         <input className="form-check-input" type="checkbox" checked={this.state.todo.done} onChange={this.toggleTodoDone}></input>
                     </div>
                     <div className="col-md-10">
                         <div className="card-body">
-                            <input className="form-control" type="text" value={this.state.todo.activity} onChange={this.editActivity} onKeyPress={this.save} />
-
+                            <input className="form-control" type="text" value={this.state.todo.activity} onChange={this.editActivity} onKeyPress={this.activityKeyPress} />
+                            <div className="date">{this.state.creationDate}</div>
                         </div>
                     </div>
                     {
