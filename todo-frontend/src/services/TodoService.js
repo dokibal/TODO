@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../constants/config';
 
-const TODO_API_BASE_URL = "http://localhost:8080/api/v1";
-const TODO_API_GENERAL_TODOS_URL = TODO_API_BASE_URL + "/todos";
-const TODO_API_STATUS_TODOS_URL = TODO_API_BASE_URL + "/todosByStatus";
+const TODO_API_GENERAL_TODOS_URL = API_BASE_URL + "/todos";
+const TODO_API_STATUS_TODOS_URL = API_BASE_URL + "/todosByStatus";
 
 class TodoService {
 

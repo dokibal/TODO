@@ -1,6 +1,7 @@
 import TodoService from "../services/TodoService";
 import React from "react"
 import TodoCard from './TodoCard.js'
+import "./TodoList.css"
 
 class TodoList extends React.Component {
 
@@ -36,7 +37,7 @@ class TodoList extends React.Component {
     render() {
         return (
             <div>
-                <h2 className="text-center">TODO List</h2>
+                <h1 className="title text-center">TODO List</h1>
                 <div className="container-lg">
                     <TodoCard refresh={this.refresh} key={0}/>
                     {
@@ -47,6 +48,7 @@ class TodoList extends React.Component {
                                 )
                         })
                     }
+                    <div className="spacer"></div>
                     {
                         this.state.doneTodos.map((todo) => {
                             console.log(todo.creationDate);
