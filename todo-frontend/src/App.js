@@ -11,7 +11,7 @@ function App() {
     <div className="fullscreen-container">
         <Routes>
           <Route path="/" element={<LoginPage navigate={navigate} />} />
-          <Route path="/todos" element={<TodoList navigate={navigate} />} />
+          <Route path="/todos/:userId" element={<TodoList navigate={navigate} />} />
         </Routes>
     </div>
   );

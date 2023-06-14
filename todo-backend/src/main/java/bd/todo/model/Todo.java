@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,13 +26,18 @@ public class Todo {
 	@Column(columnDefinition = "timestamp", name = "creation_date")
 	private LocalDateTime creationDate;
 
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	public Todo() {
 	}
 
-	public Todo(String activity, boolean done) {
+	public Todo(String activity, boolean done, User user) {
 		super();
 		this.activity = activity;
 		this.done = done;
+		this.user = user;
 	}
 
 	public long getId() {
@@ -63,6 +70,14 @@ public class Todo {
 
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

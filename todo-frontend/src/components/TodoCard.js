@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./TodoCard.css"
 import TodoService from "../services/TodoService";
 
@@ -7,22 +7,20 @@ class TodoCard extends React.Component {
     constructor(props) {
         super(props);
 
-        if (this.props.todo) {
+        //Existing TODO
+        if (props.todo && props.todo.id) {
             this.state = {
-                todo: {
-                    id: props.todo.id,
-                    done: props.todo.done,
-                    activity: props.todo.activity
-                },
+                todo: props.todo,
                 creationDate: new Date(props.todo.creationDate).toLocaleString()
             };
         }
+        //Empty TODO candidate
         else {
             this.state = {
                 todo: {
-                    id: 0,
-                    done: false,
                     activity: "",
+                    done: false,
+                    user: null
                 }
             };
         }
@@ -35,9 +33,10 @@ class TodoCard extends React.Component {
                 done: event.target.checked
             }
         },
-        ()=>{
-            this.save()
-        }
+            //Save TODO immediately
+            () => {
+                this.save()
+            }
         );
     };
 
@@ -50,10 +49,15 @@ class TodoCard extends React.Component {
         });
     };
 
-    save = () => {
-        TodoService.saveTodo(this.state.todo).then(res => {
+    save = async () => {
+        let todoToSave = {
+            ...this.state.todo,
+            user: this.props.user
+        }
+        try {
+            await TodoService.saveTodo(todoToSave);
             if (!this.state.todo.id) {
-                //Empty the component
+                //Empty the component so that it can be used for another new TODO
                 this.setState({
                     todo: {
                         id: 0,
@@ -63,8 +67,13 @@ class TodoCard extends React.Component {
                     creationDate: null
                 })
             }
+            //Get all the TODOs in the list as we have a new TODO
             this.props.refresh();
-        })
+        }
+        catch (err) {
+            console.log(err);
+        }
+
     }
 
     activityKeyPress = (event) => {
@@ -73,11 +82,16 @@ class TodoCard extends React.Component {
         }
     };
 
-    remove = (event) => {
+    remove = async (event) => {
         event.preventDefault();
-        TodoService.removeTodo(this.state.todo.id).then(res => {
+        try {
+
+            await TodoService.removeTodo(this.state.todo.id);
             this.props.refresh();
-        });
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     render() {
@@ -86,7 +100,13 @@ class TodoCard extends React.Component {
 
                 <div className="card-body row no-gutters">
                     <div className="col-md-1 text-center my-auto">
-                        <input className="form-check-input" type="checkbox" checked={this.state.todo.done} onChange={this.toggleTodoDone}></input>
+                        {
+                            //Do not show checkbox for an empty TODO
+                            this.state.todo.id ?
+                                <input className="form-check-input" type="checkbox" checked={this.state.todo.done} onChange={this.toggleTodoDone}></input>
+                                :
+                                <div></div>
+                        }
                     </div>
                     <div className="col-md-10">
                         <div className="card-body">
@@ -94,13 +114,14 @@ class TodoCard extends React.Component {
                             <div className="date">{this.state.creationDate}</div>
                         </div>
                     </div>
-                    {
-                        this.state.todo.id ? 
-                        <div className="col-md-1 text-center my-auto">
-                            <div className="removeIcon bi-x-circle-fill bi-2x" onClick={this.remove}></div>
-                        </div> : 
-                        <div></div>
-                    }
+                    <div className="col-md-1 text-center my-auto">
+                        {
+                            this.state.todo.id ?
+                                <div className="removeIcon bi-x-circle-fill bi-2x" onClick={this.remove}></div> :
+                                <button type="button" className="btn btn-primary" onClick={this.save}>Add</button>
+                            
+                            }
+                    </div>
                 </div>
             </div>
         )

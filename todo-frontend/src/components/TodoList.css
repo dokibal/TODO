@@ -1,7 +1,15 @@
 .title{
     color: #424242;
 }
-
 .spacer{
     height: 20px;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+.logoutIcon{
+    font-size: 2rem;
+    cursor:pointer;
 }

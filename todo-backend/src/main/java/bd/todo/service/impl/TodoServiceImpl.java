@@ -3,7 +3,6 @@ package bd.todo.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import bd.todo.exception.ResourceNotFoundException;
@@ -16,27 +15,25 @@ public class TodoServiceImpl implements TodoService {
 
 	private TodoRepository todoRepository;
 
-	private static final Sort sortByCreationDate = Sort.by(Sort.Direction.DESC, "creationDate");
-
 	public TodoServiceImpl(TodoRepository todoRepository) {
 		super();
 		this.todoRepository = todoRepository;
 	}
 
 	@Override
-	public List<Todo> getTodos() {
-		return todoRepository.findAll(sortByCreationDate);
+	public List<Todo> getTodos(Long userId) {
+		return todoRepository.findTodos(userId);
 	}
 
 	@Override
-	public List<Todo> getTodosByStatus(boolean done) {
-		return todoRepository.findTodosByStatus(done);
+	public List<Todo> getTodosByStatus(Long userId, boolean done) {
+		return todoRepository.findTodosByStatus(userId, done);
 	}
 
 	@Override
 	public Todo getTodoById(Long id) {
 		Todo todo = todoRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Employee does not exist with id:" + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Todo does not exist with id:" + id));
 		return todo;
 	}
 

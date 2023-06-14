@@ -23,10 +23,26 @@ class LoginPage extends React.Component {
         })
     }
 
-    login = (event) => {
-        UserService.addUser(this.state.user);
-        
-        this.props.navigate('/todos');
+    activityKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            this.login();
+        }
+    };
+
+    login = async (event) => {
+        //If the user does not exist then create a new user
+        let user = await UserService.getUserByName(this.state.user.userName);
+        if(!user.id){
+            console.log("No user exists with the given user name. Creating new user...");
+            user = await UserService.addUser(this.state.user);
+        }
+
+        if(user && user.id){
+            this.props.navigate('/todos/'+user.id);
+        }
+        else{
+            console.log("Unable to obtain the id of the user.");
+        }
     }
 
     render() {
@@ -37,6 +53,7 @@ class LoginPage extends React.Component {
                     type="text"
                     value={this.state.user.userName}
                     onChange={this.typeUserName}
+                    onKeyPress={this.activityKeyPress}
                     placeholder='User name'
                 />
                 <button type="button" className="btn btn-primary" onClick={this.login}>Login</button>

@@ -6,12 +6,12 @@ const TODO_API_STATUS_TODOS_URL = API_BASE_URL + "/todosByStatus";
 
 class TodoService {
 
-    getTodos() {
-        return axios.get(TODO_API_GENERAL_TODOS_URL);
+    getTodos(userId) {
+        return axios.get(TODO_API_GENERAL_TODOS_URL + "/" + userId);
     }
 
-    getTodosByStatus(done) {
-        return axios.get(TODO_API_STATUS_TODOS_URL, {
+    getTodosByStatus(userId, done) {
+        return axios.get(TODO_API_STATUS_TODOS_URL + "/" + userId, {
             params: {
                 done: done
             }

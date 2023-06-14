@@ -29,14 +29,14 @@ public class TodoController {
 		this.todoService = todoService;
 	}
 
-	@GetMapping("/todos")
-	public ResponseEntity<List<Todo>> getTodos() {
-		return ResponseEntity.ok(todoService.getTodos());
+	@GetMapping("/todos/{userId}")
+	public ResponseEntity<List<Todo>> getTodos(@PathVariable Long userId) {
+		return ResponseEntity.ok(todoService.getTodos(userId));
 	}
 
-	@GetMapping("/todosByStatus")
-	public ResponseEntity<List<Todo>> getTodosByStatus(@RequestParam("done") boolean done) {
-		return ResponseEntity.ok(todoService.getTodosByStatus(done));
+	@GetMapping("/todosByStatus/{userId}")
+	public ResponseEntity<List<Todo>> getTodosByStatus(@PathVariable Long userId, @RequestParam("done") boolean done) {
+		return ResponseEntity.ok(todoService.getTodosByStatus(userId, done));
 	}
 
 	@PostMapping("/todos")
