@@ -30,6 +30,12 @@ class LoginPage extends React.Component {
     };
 
     login = async (event) => {
+
+        //Check emptiness of user name.
+        if(!this.state.user.userName){
+            console.log("User name is empty string. It is an invalid user name.")
+            return;
+        }
         //If the user does not exist then create a new user
         let user = await UserService.getUserByName(this.state.user.userName);
         if(!user.id){
