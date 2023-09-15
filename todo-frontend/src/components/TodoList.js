@@ -3,7 +3,7 @@ import UserService from "../services/UserService";
 import React from "react"
 import TodoCard from './TodoCard.js'
 import "./TodoList.css"
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 //Trick to wrap TodList class component inside a function component so that we can use the useParams hook
 function withParams(Component) {

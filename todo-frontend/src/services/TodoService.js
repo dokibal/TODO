@@ -34,4 +34,5 @@ class TodoService {
         return axios.delete(url);
     }
 }
-export default new TodoService();
+const todoService = new TodoService();
+export default todoService;
