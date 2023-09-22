@@ -75,12 +75,17 @@ class TodoList extends React.Component {
             <div>
                 <div className="container-lg">
                     <div className="header">
-                        <div 
-                        className="logoutIcon bi-2x bi-box-arrow-right"
-                        onClick={this.logout}
+                        <div className="user-name-div">
+                            {this.state.user?.userName}
+                        </div>
+                        <div
+                            className="logout-icon bi-2x bi-box-arrow-right"
+                            onClick={this.logout}
                         ></div>
                     </div>
                     <TodoCard user={this.state.user} refresh={this.refresh} key={0} />
+                    <div className="spacer"></div>
+                    <h4>Active tasks</h4>
                     {
                         this.state.undoneTodos.map((todo) => {
                             return (
@@ -89,6 +94,7 @@ class TodoList extends React.Component {
                         })
                     }
                     <div className="spacer"></div>
+                    <h4>Finished tasks</h4>
                     {
                         this.state.doneTodos.map((todo) => {
                             return (

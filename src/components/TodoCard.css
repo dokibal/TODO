@@ -1,11 +1,29 @@
 .card{
-  background-color: #f5f5f5;
   color: black;
+}
+.done{
+  background-color: #B0B0B0;
+}
+.undone{
+  background-color: #f5f5f5;
 }
 .removeIcon{
   font-size: 24px;
   cursor: pointer;
+  color: red;
 }
 .date{
   text-align: right;
+}
+.loading-spinner{
+  margin:5px;
+}
+.custom-control-label::before, 
+.custom-control-label::after {
+    top: .8rem;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+.right-margin{
+  margin-right: 5px !important;
 }
