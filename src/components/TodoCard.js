@@ -109,8 +109,8 @@ class TodoCard extends React.Component {
                 {
                     this.state.loading ?
                         <div className="centered-content loading-spinner">
-                            <div class="spinner-grow text-primary" role="status">
-                                <span class="sr-only"></span>
+                            <div className="spinner-grow text-primary" role="status">
+                                <span className="sr-only"></span>
                             </div>
                         </div>
                         :
@@ -121,7 +121,7 @@ class TodoCard extends React.Component {
                         {
                             // Do not show checkbox for an empty TODO
                             this.state.todo.id ?
-                                <div class="custom-control form-control-lg custom-checkbox">
+                                <div className="custom-control form-control-lg custom-checkbox">
                                     <input
                                         className="form-check-input"
                                         type="checkbox"

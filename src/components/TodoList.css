@@ -4,7 +4,7 @@
 .spacer{
     height: 20px;
 }
-.header{
+.right-aligner{
     display: flex;
     flex-direction: row;
     justify-content: right;
@@ -20,4 +20,7 @@
     font-weight:bold;
     font-size: large;
     margin-right: 20px;
+}
+.todo-checkbox{
+    margin-right: 5px;
 }
